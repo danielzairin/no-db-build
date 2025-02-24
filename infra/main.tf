@@ -20,8 +20,8 @@ provider "aws" {
 
 resource "aws_security_group" "instance" {
   ingress {
-    from_port   = 8080
-    to_port     = 8080
+    from_port   = 3000
+    to_port     = 3000
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }
@@ -31,28 +31,25 @@ resource "aws_security_group" "instance" {
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }
-}
-
-resource "tls_private_key" "private_key" {
-  algorithm = "RSA"
-  rsa_bits  = 4096
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = -1
+    cidr_blocks = ["0.0.0.0/0"]
+  }
 }
 
 resource "aws_key_pair" "key_pair" {
-  public_key = tls_private_key.private_key.public_key_openssh
+  public_key = file("${path.module}/key.pem.pub")
 }
 
 resource "aws_instance" "instance" {
   ami                    = "ami-0fb653ca2d3203ac1"
-  instance_type          = "t2.micro"
+  instance_type          = "t2.medium"
   vpc_security_group_ids = [aws_security_group.instance.id]
   key_name               = aws_key_pair.key_pair.key_name
 
-  user_data = <<-EOF
-              #!/bin/bash
-              echo "Hello, World" > index.xhtml
-              nohup busybox httpd -f -p 8080 &
-              EOF
+  user_data = file("${path.module}/user-data.sh")
 
   user_data_replace_on_change = true
 }
