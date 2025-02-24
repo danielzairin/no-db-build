@@ -21,5 +21,5 @@ sudo -i -u ubuntu bash <<EOF
   npm run build
 
   # Start the app in the background
-  nohup npm start -- -H 0.0.0.0 -p 3000 > /home/ubuntu/app.log 2>&1 &
+  nohup npm start -- -H 0.0.0.0 -p 8080 > /home/ubuntu/app.log 2>&1 &
 EOF
