@@ -1,3 +1,10 @@
+import { RevalidateButton } from "./client";
+
 export default async function Home() {
-  return <div>{new Date().toString()}</div>;
+  return (
+    <div>
+      <p>{new Date().toString()}</p>
+      <RevalidateButton />
+    </div>
+  );
 }

@@ -49,7 +49,9 @@ resource "aws_instance" "instance" {
   vpc_security_group_ids = [aws_security_group.instance.id]
   key_name               = aws_key_pair.key_pair.key_name
 
-  user_data = file("${path.module}/user-data.sh")
+  user_data = templatefile("${path.module}/user-data.sh", {
+    CLOUDFLARE_API_TOKEN = var.CLOUDFLARE_API_TOKEN
+  })
 
   user_data_replace_on_change = true
 }

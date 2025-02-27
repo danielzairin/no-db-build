@@ -20,6 +20,8 @@ sudo -i -u ubuntu bash <<EOF
   npm install
   npm run build
 
+  export CLOUDFLARE_API_TOKEN=${CLOUDFLARE_API_TOKEN}
+
   # Start the app in the background
   nohup npm start -- -H 0.0.0.0 -p 8080 > /home/ubuntu/app.log 2>&1 &
 EOF
