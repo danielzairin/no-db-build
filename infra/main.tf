@@ -50,7 +50,9 @@ resource "aws_instance" "instance" {
   key_name               = aws_key_pair.key_pair.key_name
 
   user_data = templatefile("${path.module}/user-data.sh", {
+    APP_BASE_URL         = var.APP_BASE_URL
     CLOUDFLARE_API_TOKEN = var.CLOUDFLARE_API_TOKEN
+    CLOUDFLARE_ZONE_ID   = var.CLOUDFLARE_ZONE_ID
   })
 
   user_data_replace_on_change = true
